@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-one
+  namespace: default
+  labels:
+    app: app-one
+spec:
+  selector:
+    matchLabels:
+      app: app-one
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: app-one
+    spec:
+      containers:
+      - name: app-one
+        image: satyaxipinq/echo-file:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: FILE_PATH
+          value: /usr/share/echo-file/shared-file.echo
+        ports:
+        - containerPort: 3000
+          name: app-one
+        volumeMounts:
+        - name: pv-storage
+          mountPath: /usr/share/echo-file
+      volumes:
+      - name: pv-storage
+        persistentVolumeClaim:
+          claimName: pv-claim
+      restartPolicy: Always

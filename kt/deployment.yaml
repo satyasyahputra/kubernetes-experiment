@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kt
+  labels:
+    run: kt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: kt
+  template:
+    metadata:
+      labels:
+        run: kt
+    spec:
+      containers:
+      - args:
+        - bash
+        env:
+        - name: KT_BROKERS
+          value: host.docker.internal:9092
+        image: evpavel/kt:latest
+        imagePullPolicy: Always
+        name: kt
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 200m
+            memory: 250Mi
