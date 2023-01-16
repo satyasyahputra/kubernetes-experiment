@@ -1,6 +1,6 @@
 namespace: platform
 resources:
-  - deployment_app_1.yaml
-  - deployment_app_2.yaml
+  - ./app_1
+  - ./app_2
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
